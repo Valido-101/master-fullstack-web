@@ -28,11 +28,17 @@ class PruebasController extends Controller
     public function testOrm()
     {
         /*
+        //Obtenemos todos los posts de la bbdd (llamamos al modelo y este al método all, que funciona como
+        // un select *)
         $posts = Post::all();
         
+        //Recorremos cada post obtenido en un foreach
         foreach($posts as $post)
         {
+            //Mostramos por pantalla El título, el nombre del usuario y el de la categoría y el contenido
+            //De esta forma se concatena el valor de la propiedad de la variable con un texto plano
             echo "<h1>".$post->title."</h1>";
+            //De esta forma se puede meter el valor directamente sin concatenar, usando {}
             echo "<span style='color:gray;'>{$post->user->name} - {$post->category->name}</span>";
             echo "<p>".$post->content."</p>";
             echo "<hr>";
@@ -40,6 +46,8 @@ class PruebasController extends Controller
         * 
         */
         
+        //Aquí hacemos lo mismo que arriba sólo que también accedemos a los posts de cada categoría,
+        //esto es posible gracias al modelo ORM y la función posts del modelo de Category
         $categories = Category::all();
         
         foreach($categories as $category)

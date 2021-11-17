@@ -32,3 +32,30 @@ Route::get('/page-2/{nombre?}', function ($nombre = null){
 //Nueva ruta en la que usamos el controlador que creamos y llamamos específicamente al método index
 Route::get('/pruebas/animales', 'PruebasController@index');
 Route::get('/testOrm', 'PruebasController@testOrm');
+Route::get('/testOrm', 'PruebasController@testOrm');
+
+//RUTAS DE LA API
+
+//Una API se encarga de tener controladores que devuelven una información o realizan una acción cuando se
+//acceden a ciertas rutas
+
+    //RUTAS DE PRUEBA
+    Route::get('/usuario/pruebas', 'UserController@pruebas');
+    Route::get('/categoria/pruebas', 'CategoryController@pruebas');
+    Route::get('/entrada/pruebas', 'PostController@pruebas');
+    
+    /*Métodos HTTP comunes:
+     * 
+     *  GET: Conseguir datos o recursos
+     *  POST: Guardar datos o recursos o hacer lógica desde un formulario
+     *  PUT: Actualizar recursos o datos
+     *  DELETE: Eliminar datos o recursos
+     * 
+     *  Una API REST usa sólo los métodos GET y POST, una API RESTFUL usa los cuatro métodos
+     * 
+     */
+    
+    //Rutas del controlador de usuario
+    Route::post('/api/register', 'UserController@register');
+    Route::post('/api/login', 'UserController@login');
+
