@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'surname', 'description', 'email', 'password',
     ];
 
     /**
@@ -27,13 +27,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    
+    //Relación 1:N
+    //Devuelve todos los posts que haya creado el usuario
+    public function posts()
+    {
+        return $this->hasMany('App\Post');
+    }
 }

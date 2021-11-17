@@ -31,3 +31,4 @@ Route::get('/page-2/{nombre?}', function ($nombre = null){
 
 //Nueva ruta en la que usamos el controlador que creamos y llamamos específicamente al método index
 Route::get('/pruebas/animales', 'PruebasController@index');
+Route::get('/testOrm', 'PruebasController@testOrm');
