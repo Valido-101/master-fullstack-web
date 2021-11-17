@@ -52,8 +52,8 @@ class UserController extends Controller {
             } else {
                 
                 //Cifrar la contraseña
-                //                        elemento a cifrar, algoritmo de cifrado, las veces que se va a cifrar
-                $password = password_hash($params->password, PASSWORD_BCRYPT, ['cost' => 4]);                
+                //               algoritmo de cifrado, elemento a cifrar
+                $password = hash('sha256', $params_array['password']);                
                 
                 //Crear el usuario
                 
@@ -91,9 +91,16 @@ class UserController extends Controller {
 
     public function login(Request $request) {
         
+        //Tiramos del Json Web Token que hemos creado
         $jwtAuth = new \JwtAuth();
         
-        return $jwtAuth->signup();
+        //Estos parámetros están forzados, cuando creemos el formulario habría que recuperarlos desde la request
+        $email = 'jesus@jesus.com';
+        $password = 'jesus';
+        $pwd = hash('sha256', $password);
+        
+        //No podemos devolver un objeto, tiene que ser una respuesta en json
+        return response()->json($jwtAuth->signup($email, $pwd, true), 200);
     }
 
 }
