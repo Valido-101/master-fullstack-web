@@ -154,7 +154,7 @@ class UserController extends Controller {
             $validate = \Validator::make($params_array, [
                 'name' => 'required|alpha',//Este campo es obligatorio y tiene que ser alfanumérico
                 'surname' => 'required|alpha',
-                'email' => 'required|email|unique:users,'.$user->sub//Obligatorio, comprobación especial de email y además se asegura de que este campo se único con la excepción del email del usuario que se ha identificado
+                'email' => 'required|email|unique:users,'.$user->id//Obligatorio, comprobación especial de email y además se asegura de que este campo se único con la excepción del email del usuario que se ha identificado
             ]);
             
             //Quitar los campos que no quiero actualizar
@@ -165,7 +165,7 @@ class UserController extends Controller {
             unset($params_array['remember_token']);
             
             //Actualizar usuario en bbdd
-            $user_update = User::where('id', $user->sub)->update($params_array);
+            $user_update = User::where('id', $user->id)->update($params_array);
             
             //Devolver array con resultado
             $data = array(
@@ -236,5 +236,26 @@ class UserController extends Controller {
             
             return response()->json($data, $data['code']);
         }
+    }
+    
+    public function detail($id){
+        
+        $user = User::find($id);
+        
+        if (is_object($user)) {
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'user' => $user
+            );
+        }else{
+            $data = array(
+                'code' => 404,
+                'status' => 'error',
+                'user' => 'El usuario no existe'
+            );
+        }
+        
+        return response()->json($data, $data['code']);
     }
 }

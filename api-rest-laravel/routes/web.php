@@ -64,4 +64,6 @@ Route::get('/testOrm', 'PruebasController@testOrm');
     Route::put('/api/user/update', 'UserController@update');
     Route::post('/api/user/upload', 'UserController@upload')->middleware(\App\Http\Middleware\ApiAuthMiddleware::class);
     Route::get('/api/user/avatar/{filename}', 'UserController@getImage');
+    Route::get('/api/user/detail/{id}', 'UserController@detail');
+    
 
