@@ -18,6 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/*
 //Nueva ruta en la web que recibe un parámetro en la url
 Route::get('/page-2/{nombre?}', function ($nombre = null){
     
@@ -35,7 +36,7 @@ Route::get('/page-2/{nombre?}', function ($nombre = null){
 //Nueva ruta en la que usamos el controlador que creamos y llamamos específicamente al método index
 Route::get('/pruebas/animales', 'PruebasController@index');
 Route::get('/testOrm', 'PruebasController@testOrm');
-Route::get('/testOrm', 'PruebasController@testOrm');
+Route::get('/testOrm', 'PruebasController@testOrm');*/
 
 //RUTAS DE LA API
 
@@ -43,9 +44,9 @@ Route::get('/testOrm', 'PruebasController@testOrm');
 //acceden a ciertas rutas
 
     //RUTAS DE PRUEBA
-    Route::get('/usuario/pruebas', 'UserController@pruebas');
+    /*Route::get('/usuario/pruebas', 'UserController@pruebas');
     Route::get('/categoria/pruebas', 'CategoryController@pruebas');
-    Route::get('/entrada/pruebas', 'PostController@pruebas');
+    Route::get('/entrada/pruebas', 'PostController@pruebas');*/
     
     /*Métodos HTTP comunes:
      * 
@@ -66,4 +67,7 @@ Route::get('/testOrm', 'PruebasController@testOrm');
     Route::get('/api/user/avatar/{filename}', 'UserController@getImage');
     Route::get('/api/user/detail/{id}', 'UserController@detail');
     
-
+    //Rutas del controlador de categorías
+    //Este tipo de ruta te crea toda una serie de rutas nuevas basadas en el controlador
+    //Para ver todas las rutas de la api ejecutar el comando php artisan route:list en el directorio del proyecto
+    Route::resource('api/category', 'CategoryController');
