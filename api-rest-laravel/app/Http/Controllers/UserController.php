@@ -94,13 +94,58 @@ class UserController extends Controller {
         //Tiramos del Json Web Token que hemos creado
         $jwtAuth = new \JwtAuth();
         
-        //Estos parámetros están forzados, cuando creemos el formulario habría que recuperarlos desde la request
-        $email = 'jesus@jesus.com';
-        $password = 'jesus';
-        $pwd = hash('sha256', $password);
+        //Recibir datos por POST
+        $json = $request->input('json', null);
+        $params = json_decode($json);
+        $params_array = json_decode($json, true);
+        
+        //Validar datos
+        $validate = \Validator::make($params_array, [
+            'email' => 'required|email',//Obligatorio, comprobación especial de email
+            'password' => 'required'
+        ]);
+        
+        if ($validate->fails()) {
+
+            //La validación ha fallado
+
+            $signup = array(
+                'status' => 'error',
+                'code' => 404,
+                'mensaje' => 'Login incorrecto',
+                'errors' => $validate->errors()
+            );
+        }else{
+            //Cifrar password
+            $pwd = hash('sha256', $params->password);            
+            
+            //Devolver datos con token si el parámetro gettoken no está vacío
+            if (!empty($params->gettoken)) {
+                $signup = $jwtAuth->signup($params->email, $pwd, true);
+            }else{//Devolver datos sin token porque el parámetro gettoken está vacío
+                $signup = $jwtAuth->signup($params->email, $pwd);
+            }
+        }
         
         //No podemos devolver un objeto, tiene que ser una respuesta en json
-        return response()->json($jwtAuth->signup($email, $pwd, true), 200);
+        return response()->json($signup, 200);
+    }
+    
+    public function update(Request $request){
+        
+        $token = $request->header('Authorization');
+        
+        $jwtAuth = new \JwtAuth();
+        
+        $checkToken = $jwtAuth->checkToken($token);
+        
+        if ($checkToken) {
+            echo "<h1>Login correcto</h1>";
+        }else{
+            echo "<h1>Login INCORRECTO</h1>";
+        }
+        
+        die();
     }
 
 }
