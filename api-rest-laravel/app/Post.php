@@ -9,6 +9,10 @@ class Post extends Model
     //Tabla a la que pertenece este modelo
     protected $table = 'posts';
     
+    protected $fillable = [
+        'title', 'content', 'category_id',
+    ];
+    
     //Relación 1:N
     //Devuelve el usuario al que pertenece este post
     public function user()
