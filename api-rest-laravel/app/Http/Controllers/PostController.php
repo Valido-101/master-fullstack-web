@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Post;
+use App\Helpers\JwtAuth;
 
 class PostController extends Controller
 {
@@ -66,6 +67,72 @@ class PostController extends Controller
             
         }
         
+        return response()->json($data, $data['code']);
+        
+    }
+    
+    public function store(Request $request){
+        
+        //Recoger datos por POST
+        $json = $request->input('json', null);
+        $params = json_decode($json);
+        $params_array = json_decode($json, true);
+        
+        if (!empty($params_array)) {
+            
+            //Conseguir usuario identificado
+            $jwtAuth = new JwtAuth();
+            $token = $request -> header('Authorization', null);
+            $user = $jwtAuth->checkToken($token, true);
+            
+            //Validar datos
+            $validate = \Validator::make($params_array, [
+                'title' => 'required',
+                'content' => 'required',
+                'category_id' => 'required',
+                'image' => 'required'
+            ]);
+            
+            if ($validate->fails()) {
+                
+                $data = [
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Faltan datos'
+                ];
+                
+            }else{
+                
+                //Guardar entrada
+                $post = new Post();
+                
+                $post->user_id = $user->id;
+                $post->category_id = $params_array['category_id'];//En el curso se saca de $params
+                $post->title = $params_array['title'];
+                $post->content = $params_array['content'];
+                $post->image = $params_array['image'];
+                
+                $post->save();
+                
+                $data = [
+                'code' => 200,
+                'status' => 'success',
+                'post' => $post
+                ];
+                
+            }
+            
+        }else{
+            
+            $data = [
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Datos no enviados'
+                ];
+            
+        }
+        
+        //Devolver respuesta
         return response()->json($data, $data['code']);
         
     }
