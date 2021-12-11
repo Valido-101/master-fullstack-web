@@ -71,3 +71,6 @@ Route::get('/testOrm', 'PruebasController@testOrm');*/
     //Este tipo de ruta te crea toda una serie de rutas nuevas basadas en el controlador
     //Para ver todas las rutas de la api ejecutar el comando php artisan route:list en el directorio del proyecto
     Route::resource('api/category', 'CategoryController');
+    
+    //Rutas del controlador de entradas
+    Route::resource('api/post', 'PostController');
