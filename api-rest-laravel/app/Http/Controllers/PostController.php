@@ -136,4 +136,62 @@ class PostController extends Controller
         return response()->json($data, $data['code']);
         
     }
+    
+    public function update($id, Request $request){
+        
+        //Recoger datos por POST
+        $json = $request->input('json', null);
+        $params_array = json_decode($json, true);
+        
+        if (!empty($params_array)) {
+            
+            //Validar datos
+            $validate = \Validator::make($params_array, [
+                'title' => 'required',
+                'content' => 'required',
+                'category_id' => 'required'
+            ]);
+
+            if ($validate->fails()) {
+
+                $data = [
+                    'code' => 404,
+                    'status' => 'error',
+                    'message' => 'Faltan datos'
+                ];
+
+            }else{
+
+                //Eliminar lo que no queremos actualizar
+                unset($params_array['id']);
+                unset($params_array['user_id']);
+                unset($params_array['created_at']);
+                unset($params_array['user']);
+
+                //Actualizar el registro en concreto
+                $post = Post::where('id', $id)->updateOrCreate($params_array);//Nos devuelve el post con la información completa tras actualizarse
+
+                $data = [
+                    'code' => 200,
+                    'status' => 'success',
+                    'post' => $post,
+                    'changes' => $params_array
+                ];
+
+            }
+            
+        }
+        else{
+            
+            $data = [
+                    'code' => 404,
+                    'status' => 'error',
+                    'message' => 'Datos enviados incorrectamente'
+                ];
+            
+        }
+        
+        return response()->json($data, $data['code']);
+        
+    }
 }
