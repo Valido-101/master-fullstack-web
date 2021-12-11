@@ -11,7 +11,7 @@ class PostController extends Controller
 {
     public function __construct() {
         //Pide autenticación para todos los métodos excepto index() y show()
-        $this->middleware('api.auth', ['except' => ['index','show']]);
+        $this->middleware('api.auth', ['except' => ['index','show', 'getImage']]);
     }
     
     /**
@@ -274,6 +274,33 @@ class PostController extends Controller
         
         //Devolver respuesta
         return response()->json($data, $data['code']);
+        
+    }
+    
+    public function getImage($fileName){
+        
+        //Comprobar si existe el fichero
+        $isset = \Storage::disk('images')->exists($fileName);
+        
+        if ($isset) {
+            
+            //Conseguir la imagen
+            $file = \Storage::disk('images')->get($fileName);
+            
+            //Devolver la imagen
+            return new Response($file, 200);
+        }else{
+            
+            $data = [
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'La imagen no existe'
+            ];
+            
+        }
+        
+        return response()->json($data, $data['code']);
+        
         
     }
     

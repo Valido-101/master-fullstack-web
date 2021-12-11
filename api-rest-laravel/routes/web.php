@@ -76,4 +76,5 @@ Route::get('/testOrm', 'PruebasController@testOrm');*/
     Route::resource('api/post', 'PostController');
     
     //Ruta para subir imagen de post
-    Route::post('api/post/upload', 'PostController@upload')->middleware(\App\Http\Middleware\ApiAuthMiddleware::class);
+    Route::post('api/post/upload', 'PostController@upload');
+    Route::get('api/image/{filename}', 'PostController@getImage');
