@@ -74,3 +74,6 @@ Route::get('/testOrm', 'PruebasController@testOrm');*/
     
     //Rutas del controlador de entradas
     Route::resource('api/post', 'PostController');
+    
+    //Ruta para subir imagen de post
+    Route::post('api/post/upload', 'PostController@upload')->middleware(\App\Http\Middleware\ApiAuthMiddleware::class);
