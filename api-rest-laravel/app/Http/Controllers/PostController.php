@@ -11,7 +11,12 @@ class PostController extends Controller
 {
     public function __construct() {
         //Pide autenticación para todos los métodos excepto index() y show()
-        $this->middleware('api.auth', ['except' => ['index','show', 'getImage']]);
+        $this->middleware('api.auth', ['except' => [
+            'index',
+            'show',
+            'getImage',
+            'getPostsByCategory',
+            'getPostsByUser']]);
     }
     
     /**
@@ -301,6 +306,27 @@ class PostController extends Controller
         
         return response()->json($data, $data['code']);
         
+    }
+    
+    public function getPostsByCategory($id){
+        
+        $posts = Post::where('category_id', $id)->get();
+        
+        return response()->json([
+            'status' => 'success',
+            'posts' => $posts
+        ], 200);
+        
+    }
+    
+    public function getPostsByUser($id){
+        
+        $posts = Post::where('user_id', $id)->get();
+        
+        return response()->json([
+            'status' => 'success',
+            'posts' => $posts
+        ], 200);
         
     }
     

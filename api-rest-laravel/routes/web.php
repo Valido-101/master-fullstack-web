@@ -78,3 +78,7 @@ Route::get('/testOrm', 'PruebasController@testOrm');*/
     //Ruta para subir imagen de post
     Route::post('api/post/upload', 'PostController@upload');
     Route::get('api/image/{filename}', 'PostController@getImage');
+    
+    //Rutas para obtener los posts
+    Route::get('api/post/category/{id}', 'PostController@getPostsByCategory');
+    Route::get('api/post/user/{id}', 'PostController@getPostsByUser');
